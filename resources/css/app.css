@@ -1,0 +1,47 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../views';
+
+/*
+ | Mind & Health — paleta de marca (Tailwind v4)
+ | navy     = azul profundo (botones, títulos)
+ | mint     = acento menta
+ | lavender = acento lavanda / fondos suaves
+*/
+@theme {
+    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+        'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Azul profundo de marca */
+    --color-navy-50: #eef1f7;
+    --color-navy-100: #d6dcea;
+    --color-navy-200: #adbad6;
+    --color-navy-300: #8497c1;
+    --color-navy-400: #5b73ac;
+    --color-navy-500: #3a548f;
+    --color-navy-600: #2b4070;
+    --color-navy-700: #1e2a4a; /* principal */
+    --color-navy-800: #161f37;
+    --color-navy-900: #0e1424;
+
+    /* Acento menta */
+    --color-mint-100: #d8f3ee;
+    --color-mint-200: #b3e7df;
+    --color-mint-300: #7fd6c9;
+    --color-mint-400: #4ec4b4;
+    --color-mint-500: #2bab9a;
+
+    /* Acento lavanda */
+    --color-lavender-100: #eceaf8;
+    --color-lavender-200: #d9d5f1;
+    --color-lavender-300: #c2bbe8;
+    --color-lavender-400: #a99fdc;
+    --color-lavender-500: #8b7ece;
+}
+
+/* Fondo general suave estilo app */
+body {
+    background-color: #f6f7fb;
+}
