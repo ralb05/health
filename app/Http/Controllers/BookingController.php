@@ -82,6 +82,24 @@ class BookingController extends Controller
         return redirect()->route('citas.show', $appointment);
     }
 
+    /** "Mis citas": próximas y pasadas del paciente. */
+    public function index(Request $request): View
+    {
+        $appointments = Appointment::with('doctor')
+            ->where('patient_id', $request->user()->id)
+            ->orderByDesc('starts_at')
+            ->get();
+
+        // Próximas: activas y aún por ocurrir. Pasadas: el resto.
+        [$upcoming, $past] = $appointments->partition(
+            fn (Appointment $a) => $a->is_active && $a->ends_at->isFuture()
+        );
+
+        $upcoming = $upcoming->sortBy('starts_at')->values();
+
+        return view('citas.index', compact('upcoming', 'past'));
+    }
+
     /** Detalle/confirmación de una cita (pantalla de pago en el Entregable 5). */
     public function show(Appointment $appointment): View
     {
@@ -105,12 +123,23 @@ class BookingController extends Controller
     {
         $this->authorizeOwner($appointment);
 
-        if ($appointment->is_active) {
-            $appointment->update([
-                'status' => Appointment::STATUS_CANCELLED,
-                'reservation_key' => null,
-            ]);
+        if (! $appointment->is_active) {
+            return redirect()->route('citas.show', $appointment);
         }
+
+        // Una cita confirmada (pagada) solo se cancela con la anticipación mínima.
+        if ($appointment->status === Appointment::STATUS_CONFIRMED) {
+            $minHours = (int) config('booking.cancel_min_hours', 24);
+            if ($appointment->starts_at->lessThan(now()->addHours($minHours))) {
+                return redirect()->route('citas.show', $appointment)
+                    ->with('error', "No puedes cancelar con menos de {$minHours} horas de anticipación. Escríbenos para reprogramar.");
+            }
+        }
+
+        $appointment->update([
+            'status' => Appointment::STATUS_CANCELLED,
+            'reservation_key' => null,
+        ]);
 
         return redirect()->route('citas.show', $appointment)
             ->with('status', 'Tu cita fue cancelada.');

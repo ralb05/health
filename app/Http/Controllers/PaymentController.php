@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\AppointmentConfirmed;
 use App\Models\Appointment;
 use App\Models\Payment;
 use App\Services\MercadoPagoService;
@@ -10,6 +11,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class PaymentController extends Controller
@@ -176,7 +178,9 @@ class PaymentController extends Controller
                     'status' => Appointment::STATUS_CONFIRMED,
                     'expires_at' => null,
                 ]);
-                // (El correo de confirmación se envía en el Entregable 6.)
+
+                // Correo de confirmación al paciente (se encola).
+                Mail::to($appointment->patient->email)->send(new AppointmentConfirmed($appointment));
             }
         });
     }

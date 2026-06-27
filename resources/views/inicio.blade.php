@@ -35,18 +35,25 @@
             @endforeach
         </div>
 
-        {{-- Próxima cita: placeholder hasta el Entregable 4/6 --}}
-        <h2 class="mt-7 mb-3 text-sm font-semibold tracking-wide text-navy-400 uppercase">
-            Próxima cita
-        </h2>
-        <x-card class="flex items-center gap-3 text-navy-400">
-            <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-navy-50">
-                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M7 3v3m10-3v3M4 9h16M5 6h14a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Z"/>
-                </svg>
-            </span>
-            <p class="text-sm">Aún no tienes citas. Agenda con un especialista cuando quieras.</p>
-        </x-card>
+        {{-- Próxima cita --}}
+        <div class="mt-7 mb-3 flex items-center justify-between">
+            <h2 class="text-sm font-semibold tracking-wide text-navy-400 uppercase">Próxima cita</h2>
+            @if ($nextAppointment)
+                <a href="{{ route('citas.index') }}" class="text-sm font-medium text-navy-500 hover:text-navy-700">Ver todas</a>
+            @endif
+        </div>
+        @if ($nextAppointment)
+            <x-appointment-row :appointment="$nextAppointment" />
+        @else
+            <x-card class="flex items-center gap-3 text-navy-400">
+                <span class="inline-flex h-10 w-10 items-center justify-center rounded-xl bg-navy-50">
+                    <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M7 3v3m10-3v3M4 9h16M5 6h14a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1Z"/>
+                    </svg>
+                </span>
+                <p class="text-sm">Aún no tienes citas. Agenda con un especialista cuando quieras.</p>
+            </x-card>
+        @endif
 
         {{-- Banner consultas online --}}
         <x-card class="mt-6 bg-mint-100 ring-mint-200">

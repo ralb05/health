@@ -43,7 +43,7 @@ hasta que el anterior cumple sus **criterios de aceptación**.
 - [x] Entregable 2 — Especialidades y especialistas ✅ (home con especialidades, lista y perfil con precio COP; seeders con 5 especialistas)
 - [x] Entregable 3 — Disponibilidad ✅ (schedules por doctor + AvailabilityService que calcula cupos libres; config/booking.php)
 - [x] Entregable 4 — Agendar cita ✅ (selector fecha/hora, cita pending_payment, reserva de cupo anti-doble-reserva, expiración a los 15 min)
-- [ ] Entregable 5 — Pagos
+- [x] Entregable 5 — Pagos ✅ (Mercado Pago: checkout + webhook idempotente que confirma la cita; modo simulado para probar sin llaves)
 - [ ] Entregable 6 — Mis citas y notificaciones
 - [ ] Entregable 7 — Panel del especialista/admin
 - [ ] Entregable 8 — Pulido y publicación

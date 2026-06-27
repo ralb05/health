@@ -20,7 +20,7 @@ class Appointment extends Model
 
     protected $fillable = [
         'patient_id', 'doctor_id', 'specialty_id', 'starts_at', 'ends_at',
-        'type', 'status', 'price_cop', 'meeting_url', 'notes', 'expires_at',
+        'type', 'status', 'price_cop', 'meeting_url', 'notes', 'expires_at', 'reminded_at',
     ];
 
     protected function casts(): array
@@ -29,6 +29,7 @@ class Appointment extends Model
             'starts_at' => 'datetime',
             'ends_at' => 'datetime',
             'expires_at' => 'datetime',
+            'reminded_at' => 'datetime',
             'price_cop' => 'integer',
         ];
     }

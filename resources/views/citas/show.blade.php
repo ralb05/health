@@ -24,9 +24,12 @@
 
         <h1 class="mt-4 text-xl font-semibold text-navy-700">Detalles de la cita</h1>
 
-        {{-- Mensaje de estado --}}
+        {{-- Mensajes --}}
         @if (session('status'))
             <div class="mt-4 rounded-xl bg-navy-50 px-4 py-3 text-sm font-medium text-navy-600">{{ session('status') }}</div>
+        @endif
+        @if (session('error'))
+            <div class="mt-4 rounded-xl bg-red-50 px-4 py-3 text-sm font-medium text-red-600">{{ session('error') }}</div>
         @endif
 
         {{-- Especialista --}}

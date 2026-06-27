@@ -19,4 +19,15 @@ return [
     */
     'hold_minutes' => env('BOOKING_HOLD_MINUTES', 15),
 
+    /*
+    | Horas mínimas de anticipación para que el paciente pueda cancelar una
+    | cita ya confirmada (pagada).
+    */
+    'cancel_min_hours' => env('BOOKING_CANCEL_MIN_HOURS', 24),
+
+    /*
+    | Horas antes de la cita en que se envía el recordatorio por correo.
+    */
+    'reminder_hours_before' => env('BOOKING_REMINDER_HOURS_BEFORE', 24),
+
 ];

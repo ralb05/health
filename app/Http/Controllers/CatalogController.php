@@ -2,21 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\Specialty;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class CatalogController extends Controller
 {
-    /** Home del paciente: saludo + especialidades. */
-    public function home(): View
+    /** Home del paciente: saludo + especialidades + próxima cita. */
+    public function home(Request $request): View
     {
         $specialties = Specialty::where('is_active', true)
             ->withCount('activeDoctors')
             ->orderBy('id')
             ->get();
 
-        return view('inicio', compact('specialties'));
+        // Próxima cita activa del paciente (la más cercana por venir).
+        $nextAppointment = Appointment::with('doctor')
+            ->where('patient_id', $request->user()->id)
+            ->whereIn('status', Appointment::ACTIVE_STATUSES)
+            ->where('ends_at', '>=', now())
+            ->orderBy('starts_at')
+            ->first();
+
+        return view('inicio', compact('specialties', 'nextAppointment'));
     }
 
     /** Detalle de una especialidad + lista de sus especialistas. */

@@ -21,6 +21,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/especialistas/{doctor}/agendar', [BookingController::class, 'store'])->name('booking.store');
 
     // Citas del paciente
+    Route::get('/citas', [BookingController::class, 'index'])->name('citas.index');
     Route::get('/citas/{appointment}', [BookingController::class, 'show'])->name('citas.show');
     Route::post('/citas/{appointment}/cancelar', [BookingController::class, 'cancel'])->name('citas.cancel');
 

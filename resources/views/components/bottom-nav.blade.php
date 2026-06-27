@@ -5,10 +5,10 @@
 @php
     // Rutas reales se conectan en entregables posteriores; por ahora placeholders.
     $items = [
-        'inicio'   => ['label' => 'Inicio',   'href' => url('/inicio')],
-        'citas'    => ['label' => 'Citas',    'href' => '#'],
+        'inicio'   => ['label' => 'Inicio',   'href' => route('inicio')],
+        'citas'    => ['label' => 'Citas',    'href' => route('citas.index')],
         'mensajes' => ['label' => 'Mensajes', 'href' => '#'],
-        'perfil'   => ['label' => 'Perfil',   'href' => '#'],
+        'perfil'   => ['label' => 'Perfil',   'href' => route('profile.edit')],
     ];
 
     $icons = [

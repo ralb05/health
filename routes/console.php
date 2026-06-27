@@ -10,3 +10,9 @@ Artisan::command('inspire', function () {
 
 // Libera cupos de citas no pagadas: cada minuto expira los holds vencidos.
 Schedule::command('appointments:expire')->everyMinute()->withoutOverlapping();
+
+// Marca como completadas las citas confirmadas que ya terminaron.
+Schedule::command('appointments:complete')->hourly();
+
+// Envía recordatorios de las citas próximas.
+Schedule::command('appointments:remind')->everyFifteenMinutes()->withoutOverlapping();
