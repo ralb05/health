@@ -17,9 +17,10 @@ RUN npm run build
 FROM php:8.5-cli-bookworm AS app
 
 # Dependencias de sistema + extensiones PHP que necesita Laravel y MercadoPago.
+# Incluye drivers de SQLite, MySQL y PostgreSQL para que nunca falte "driver".
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        git unzip libzip-dev libicu-dev libsqlite3-dev libcurl4-openssl-dev \
-    && docker-php-ext-install pdo pdo_sqlite zip intl curl \
+        git unzip libzip-dev libicu-dev libsqlite3-dev libcurl4-openssl-dev libpq-dev \
+    && docker-php-ext-install pdo pdo_sqlite pdo_mysql pdo_pgsql zip intl curl \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Composer (copiado desde la imagen oficial).
