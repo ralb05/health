@@ -22,6 +22,22 @@
             <x-field label="Contraseña" name="password" type="password" required autocomplete="new-password" placeholder="Mínimo 8 caracteres" />
             <x-field label="Confirmar contraseña" name="password_confirmation" type="password" required autocomplete="new-password" placeholder="Repite la contraseña" />
 
+            <div class="pt-1">
+                <label for="terms" class="flex items-start gap-2 text-sm text-navy-500">
+                    <input id="terms" name="terms" type="checkbox" value="1" @checked(old('terms'))
+                           class="mt-0.5 h-4 w-4 rounded border-navy-200 text-navy-700 focus:ring-navy-300">
+                    <span>
+                        Acepto los
+                        <a href="{{ route('legal.terminos') }}" target="_blank" class="font-medium text-navy-700 hover:underline">Términos</a>
+                        y la
+                        <a href="{{ route('legal.privacidad') }}" target="_blank" class="font-medium text-navy-700 hover:underline">Política de tratamiento de datos</a>.
+                    </span>
+                </label>
+                @error('terms')
+                    <p class="mt-1 text-xs font-medium text-red-500">{{ $message }}</p>
+                @enderror
+            </div>
+
             <div class="pt-2">
                 <x-button type="submit">Crear cuenta</x-button>
             </div>

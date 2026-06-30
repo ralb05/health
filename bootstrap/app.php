@@ -12,9 +12,19 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Cabeceras de seguridad en todas las respuestas web.
+        $middleware->web(append: [
+            \App\Http\Middleware\SecurityHeaders::class,
+        ]);
+
         // El webhook de Mercado Pago llega sin token CSRF (servidor-a-servidor).
         $middleware->validateCsrfTokens(except: [
             'webhooks/mercadopago',
+        ]);
+
+        // Alias para proteger rutas por rol: ->middleware('role:admin')
+        $middleware->alias([
+            'role' => \App\Http\Middleware\EnsureUserHasRole::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {

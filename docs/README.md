@@ -44,6 +44,8 @@ hasta que el anterior cumple sus **criterios de aceptación**.
 - [x] Entregable 3 — Disponibilidad ✅ (schedules por doctor + AvailabilityService que calcula cupos libres; config/booking.php)
 - [x] Entregable 4 — Agendar cita ✅ (selector fecha/hora, cita pending_payment, reserva de cupo anti-doble-reserva, expiración a los 15 min)
 - [x] Entregable 5 — Pagos ✅ (Mercado Pago: checkout + webhook idempotente que confirma la cita; modo simulado para probar sin llaves)
-- [ ] Entregable 6 — Mis citas y notificaciones
-- [ ] Entregable 7 — Panel del especialista/admin
-- [ ] Entregable 8 — Pulido y publicación
+- [x] Entregable 6 — Mis citas y notificaciones ✅ (Mis citas próximas/pasadas, próxima cita en home, cancelar con anticipación, correos confirmación/recordatorio, auto-completar)
+- [x] Entregable 7 — Panel del especialista/admin ✅ (roles, admin: CRUD especialidades/especialistas + citas/pagos; especialista: agenda, enlace videollamada, disponibilidad)
+- [x] Entregable 8 — Pulido y publicación ✅ (PWA instalable, headers de seguridad, Términos+Política Ley 1581, 28 tests verdes, guía DEPLOY.md)
+
+> 🎉 **MVP COMPLETO.** Ver [`DEPLOY.md`](DEPLOY.md) para publicar a producción.

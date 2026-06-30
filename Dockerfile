@@ -13,7 +13,8 @@ COPY . .
 RUN npm run build
 
 # ---- Etapa 2: runtime PHP ----
-FROM php:8.3-cli-bookworm AS app
+# 8.5: requerido por mercadopago/dx-php (>=8.5) y symfony 8.1 (>=8.4.1) según composer.lock.
+FROM php:8.5-cli-bookworm AS app
 
 # Dependencias de sistema + extensiones PHP que necesita Laravel y MercadoPago.
 RUN apt-get update && apt-get install -y --no-install-recommends \

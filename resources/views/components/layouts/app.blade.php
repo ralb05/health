@@ -11,7 +11,19 @@
 
     <title>{{ $title ?? config('app.name') }}</title>
 
+    {{-- PWA --}}
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="icon" type="image/svg+xml" href="/icon.svg">
+    <link rel="apple-touch-icon" href="/icon.svg">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Mind & Health">
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
+        }
+    </script>
 </head>
 <body class="min-h-dvh text-navy-900 antialiased">
     {{--

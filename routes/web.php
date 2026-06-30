@@ -10,6 +10,10 @@ Route::get('/', function () {
     return view('welcome');
 })->name('welcome');
 
+// Páginas legales (públicas)
+Route::view('/terminos', 'legal.terminos')->name('legal.terminos');
+Route::view('/privacidad', 'legal.privacidad')->name('legal.privacidad');
+
 Route::middleware('auth')->group(function () {
     // Catálogo: home del paciente, especialidades y perfiles de especialistas
     Route::get('/inicio', [CatalogController::class, 'home'])->name('inicio');
@@ -33,6 +37,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/pago/{appointment}/pendiente', [PaymentController::class, 'pending'])->name('payment.pending');
     Route::get('/pago/{appointment}/fallo', [PaymentController::class, 'failure'])->name('payment.failure');
 
+    // Alias 'dashboard' (compat. Breeze): redirige al home según el rol.
+    Route::get('/dashboard', fn () => redirect()->route(auth()->user()->homeRoute()))->name('dashboard');
+
     // Perfil de cuenta (Breeze)
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -41,5 +48,45 @@ Route::middleware('auth')->group(function () {
 
 // Webhook de Mercado Pago: público (servidor-a-servidor), sin login ni CSRF.
 Route::post('/webhooks/mercadopago', [PaymentController::class, 'webhook'])->name('payment.webhook');
+
+/*
+| Panel del ADMINISTRADOR
+*/
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
+
+    Route::get('especialidades', [\App\Http\Controllers\Admin\SpecialtyController::class, 'index'])->name('specialties.index');
+    Route::get('especialidades/crear', [\App\Http\Controllers\Admin\SpecialtyController::class, 'create'])->name('specialties.create');
+    Route::post('especialidades', [\App\Http\Controllers\Admin\SpecialtyController::class, 'store'])->name('specialties.store');
+    Route::get('especialidades/{specialty}/editar', [\App\Http\Controllers\Admin\SpecialtyController::class, 'edit'])->name('specialties.edit');
+    Route::put('especialidades/{specialty}', [\App\Http\Controllers\Admin\SpecialtyController::class, 'update'])->name('specialties.update');
+    Route::patch('especialidades/{specialty}/estado', [\App\Http\Controllers\Admin\SpecialtyController::class, 'toggle'])->name('specialties.toggle');
+
+    Route::get('especialistas', [\App\Http\Controllers\Admin\DoctorController::class, 'index'])->name('doctors.index');
+    Route::get('especialistas/crear', [\App\Http\Controllers\Admin\DoctorController::class, 'create'])->name('doctors.create');
+    Route::post('especialistas', [\App\Http\Controllers\Admin\DoctorController::class, 'store'])->name('doctors.store');
+    Route::get('especialistas/{doctor}/editar', [\App\Http\Controllers\Admin\DoctorController::class, 'edit'])->name('doctors.edit');
+    Route::put('especialistas/{doctor}', [\App\Http\Controllers\Admin\DoctorController::class, 'update'])->name('doctors.update');
+    Route::patch('especialistas/{doctor}/estado', [\App\Http\Controllers\Admin\DoctorController::class, 'toggle'])->name('doctors.toggle');
+
+    Route::get('citas', [\App\Http\Controllers\Admin\AppointmentController::class, 'index'])->name('citas.index');
+    Route::post('citas/{appointment}/cancelar', [\App\Http\Controllers\Admin\AppointmentController::class, 'cancel'])->name('citas.cancel');
+
+    Route::get('pagos', [\App\Http\Controllers\Admin\PaymentController::class, 'index'])->name('payments.index');
+});
+
+/*
+| Panel del ESPECIALISTA
+*/
+Route::middleware(['auth', 'role:doctor'])->prefix('especialista')->name('doctor.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\Doctor\DashboardController::class, 'index'])->name('dashboard');
+
+    Route::post('citas/{appointment}/enlace', [\App\Http\Controllers\Doctor\AppointmentController::class, 'updateMeetingUrl'])->name('citas.meeting');
+    Route::post('citas/{appointment}/completar', [\App\Http\Controllers\Doctor\AppointmentController::class, 'complete'])->name('citas.complete');
+
+    Route::get('disponibilidad', [\App\Http\Controllers\Doctor\ScheduleController::class, 'index'])->name('schedules.index');
+    Route::post('disponibilidad', [\App\Http\Controllers\Doctor\ScheduleController::class, 'store'])->name('schedules.store');
+    Route::delete('disponibilidad/{schedule}', [\App\Http\Controllers\Doctor\ScheduleController::class, 'destroy'])->name('schedules.destroy');
+});
 
 require __DIR__.'/auth.php';
