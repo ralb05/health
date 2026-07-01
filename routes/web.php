@@ -69,6 +69,10 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::put('especialistas/{doctor}', [\App\Http\Controllers\Admin\DoctorController::class, 'update'])->name('doctors.update');
     Route::patch('especialistas/{doctor}/estado', [\App\Http\Controllers\Admin\DoctorController::class, 'toggle'])->name('doctors.toggle');
 
+    // Horarios (disponibilidad) de cada especialista
+    Route::post('especialistas/{doctor}/horarios', [\App\Http\Controllers\Admin\ScheduleController::class, 'store'])->name('doctors.schedules.store');
+    Route::delete('especialistas/{doctor}/horarios/{schedule}', [\App\Http\Controllers\Admin\ScheduleController::class, 'destroy'])->name('doctors.schedules.destroy');
+
     Route::get('citas', [\App\Http\Controllers\Admin\AppointmentController::class, 'index'])->name('citas.index');
     Route::post('citas/{appointment}/cancelar', [\App\Http\Controllers\Admin\AppointmentController::class, 'cancel'])->name('citas.cancel');
 

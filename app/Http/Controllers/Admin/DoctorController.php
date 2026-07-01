@@ -40,8 +40,9 @@ class DoctorController extends Controller
     public function edit(Doctor $doctor): View
     {
         return view('admin.doctors.form', [
-            'doctor' => $doctor,
+            'doctor' => $doctor->load('schedules'),
             'specialties' => Specialty::orderBy('name')->get(),
+            'weekdays' => ScheduleController::WEEKDAYS,
         ]);
     }
 
