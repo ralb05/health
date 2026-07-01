@@ -12,6 +12,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Confiar en el proxy de la plataforma (Railway/Render/Fly) para que
+        // Laravel detecte HTTPS vía X-Forwarded-Proto y genere URLs correctas.
+        $middleware->trustProxies(at: '*');
+
         // Cabeceras de seguridad en todas las respuestas web.
         $middleware->web(append: [
             \App\Http\Middleware\SecurityHeaders::class,
